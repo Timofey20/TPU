@@ -1,0 +1,28 @@
+input {
+  // display: block;
+}
+h2 {
+  margin-bottom: 30px;
+}
+.row {
+  padding: 10px 0px;
+}
+.form-check{
+  margin-bottom: 8px;
+  border: 1px solid grey;
+  border-radius: 10px;
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  input{
+    margin-left: 0px !important;
+    float: none !important;
+  }
+
+}
+.image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+}
