@@ -2,7 +2,7 @@
   <div class="container">
     <h2>Исходные данные</h2>
     <FormDefault />
-    <button @click="formCheck()" type="button" class="btn btn-primary">Посчитать</button>
+    <button @click="formCheck()" type="button" class="btn btn-primary mb-3">Посчитать</button>
   </div>
 </template>
 
