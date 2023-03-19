@@ -1,6 +1,14 @@
-import { createApp } from 'vue'
-import App from './App.vue'
-import PhotoSwipe from 'vue-photoswipe.js';
-import 'vue-photoswipe.js/dist/static/css/photoswipe.css';
+import { createApp } from "vue";
+import App from "./App.vue";
+import { Fancybox } from '@fancyapps/ui/dist/fancybox/fancybox.esm.js';
+import '@fancyapps/ui/dist/fancybox/fancybox.css';
 
-createApp(App).mount('#app').use(PhotoSwipe)
+
+Fancybox.bind('[data-fancybox="gallery"]', {});
+
+
+const app = createApp(App);
+
+// app.component("CoolLightBox", CoolLightBox);
+
+app.mount("#app")

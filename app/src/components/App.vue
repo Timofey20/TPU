@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div class="container">
     <h2>Исходные данные</h2>
     <FormDefault />
@@ -22,4 +22,4 @@ export default {
   },
   components: { FormDefault }
 }
-</script>
+</script> -->

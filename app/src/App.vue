@@ -1,15 +1,26 @@
 <template>
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="container">
+    <h2>Исходные данные</h2>
+    <FormDefault />
+    <button @click="formCheck()" type="button" class="btn btn-primary">Посчитать</button>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/App.vue'
+import FormDefault from './components/FormDefault.vue'
 import '@/styles/style.scss'
 
 export default {
   name: 'App',
-  components: {
-    HelloWorld
-  }
+  methods: {
+    formCheck() {
+      setTimeout(() => {
+        alert('Объект защищен')
+      }, 1000);
+    }
+  },
+  props: {
+  },
+  components: { FormDefault }
 }
 </script>
