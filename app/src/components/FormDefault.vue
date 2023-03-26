@@ -1,14 +1,14 @@
 <template lang="">
-  <div class="container">
+  <form class="container">
     <div class="row">
       <div class="col">Тип здания (сооружения)</div>
       <div class="col">
         <select class="form-select">
-          <option value="1">
+          <!-- <option value="1">
             Сосредоточенное (дымовые трубы, вышки, башни)
-          </option>
+          </option> -->
           <option value="2" selected>Прямоугольной формы</option>
-          <option value="3">Протяженный</option>
+          <!-- <option value="3">Протяженный</option> -->
         </select>
       </div>
     </div>
@@ -18,15 +18,15 @@
         <div class="input-group">
           <div class="input-group-prepend">
             <span class="input-group-text" id="basic-addon1"
-              ><b>A&nbsp;=&nbsp;{{ width }}</b></span
+              ><b>A&nbsp;=&nbsp;{{ L }}</b></span
             >
           </div>
           <input
             required=""
             class="form-control"
             type="number"
-            :value="width"
-            @change="(v) => (width = v.target.value)"
+            :value="L"
+            @change="(v) => (L = v.target.value)"
           />
           <div class="input-group-append">
             <span class="input-group-text" id="basic-addon2">м</span>
@@ -40,15 +40,15 @@
         <div class="input-group">
           <div class="input-group-prepend">
             <span class="input-group-text" id="basic-addon1"
-              ><b>B&nbsp;=&nbsp;{{ length }}</b></span
+              ><b>B&nbsp;=&nbsp;{{ W }}</b></span
             >
           </div>
           <input
             required=""
             class="form-control"
             type="number"
-            :value="length"
-            @change="(v) => (length = v.target.value)"
+            :value="W"
+            @change="(v) => (W = v.target.value)"
           />
           <div class="input-group-append">
             <span class="input-group-text" id="basic-addon2">м</span>
@@ -62,15 +62,15 @@
         <div class="input-group">
           <div class="input-group-prepend">
             <span class="input-group-text" id="basic-addon1"
-              ><b>hx&nbsp;=&nbsp;{{ height }}</b></span
+              ><b>hx&nbsp;=&nbsp;{{ H }}</b></span
             >
           </div>
           <input
             required=""
             class="form-control"
             type="number"
-            :value="height"
-            @change="(v) => (height = v.target.value)"
+            :value="H"
+            @change="(v) => (H = v.target.value)"
           />
           <div class="input-group-append">
             <span class="input-group-text" id="basic-addon2">м</span>
@@ -91,6 +91,8 @@
             type="radio"
             name="flexRadioDefault"
             :id="`flexRadioDefault${index}`"
+            :value="item"
+            v-model="typeOfDefence"
           />
           <a
             data-fancybox="gallery"
@@ -117,7 +119,7 @@
         </a>
       </div>
       <div class="col">
-        <select class="form-select mb-3">
+        <select v-model="numberLightningStrikes" class="form-select mb-3">
           <option value="">== Выбрать ==</option>
           <option value="1">n=1 (tср=10..20)</option>
           <option value="2">n=2 (tср=21..40)</option>
@@ -183,7 +185,12 @@
         </tr>
         <tr>
           <td bgcolor="green">
-            <input type="radio" name="nm" value="1" />
+            <input
+              v-model="classOfDefence"
+              type="radio"
+              name="nm"
+              value="99.5"
+            />
           </td>
           <td>
             Здания и сооружения или их части, помещения которых согласно ПУЭ
@@ -195,7 +202,12 @@
         </tr>
         <tr>
           <td bgcolor="green">
-            <input type="radio" name="nm" value="3" checked="" />
+            <input
+              v-model="classOfDefence"
+              type="radio"
+              name="nm"
+              value="95"
+            />
           </td>
           <td>
             Здания и сооружения или их части, помещения которых согласно ПУЭ
@@ -209,7 +221,7 @@
         </tr>
         <tr>
           <td bgcolor="green">
-            <input type="radio" name="nm" value="4" />
+            <input v-model="classOfDefence" type="radio" name="nm" value="95" />
           </td>
           <td>Наружные установки, создающие согласно ПУЭ зону класса В-Iг</td>
           <td>На всей территории СНГ</td>
@@ -218,12 +230,12 @@
         </tr>
         <tr>
           <td bgcolor="green">
-            <input type="radio" name="nm" value="8" />
+            <input v-model="classOfDefence" type="radio" name="nm" value="90" />
           </td>
           <td>
             Расположенные в сельской местности небольшие строения III — V
-            степеней огнестойкости, помещения которых согласно ПУЭ относятся
-            к зонам классов П-I, П-II, П-IIа
+            степеней огнестойкости, помещения которых согласно ПУЭ относятся к
+            зонам классов П-I, П-II, П-IIа
           </td>
           <td>
             В местностях со средней продолжительностью гроз 20 ч в год и более
@@ -235,7 +247,7 @@
         </tr>
         <tr>
           <td bgcolor="green">
-            <input type="radio" name="nm" value="15" />
+            <input v-model="classOfDefence" type="radio" name="nm" value="90" />
           </td>
           <td>
             Небольшие строения III-V степеней огнестойкости, расположенные в
@@ -253,29 +265,11 @@
         </tr>
         <tr>
           <td bgcolor="green">
-            <input type="radio" name="nm" value="16" />
+            <input v-model="classOfDefence" type="radio" name="nm" value="95" />
           </td>
           <td>
-            Небольшие строения III-V степеней огнестойкости, расположенные в
-            сельской местности, в которых отсутствуют помещения, относимые по
-            ПУЭ к зонам взрыво и пожароопасных классов
-          </td>
-          <td>
-            В местностях со средней продолжительностью гроз 20 ч в год и более
-            для III, IIIa, IIIб, IV, V степеней огнестойкости
-          </td>
-          <td>
-            не требуется использование стержневых и тросовых молниеотводов
-          </td>
-          <td>III</td>
-        </tr>
-        <tr>
-          <td bgcolor="green">
-            <input type="radio" name="nm" value="17" />
-          </td>
-          <td>
-            Здания вычислительных центров, в том числе расположенные в
-            городской застройке
+            Здания вычислительных центров, в том числе расположенные в городской
+            застройке
           </td>
           <td>
             В местностях со средней продолжительностью гроз 20 ч в год и более
@@ -285,7 +279,7 @@
         </tr>
         <tr>
           <td bgcolor="green">
-            <input type="radio" name="nm" value="19" />
+            <input v-model="classOfDefence" type="radio" name="nm" value="90" />
           </td>
           <td>
             Дымовые и прочие трубы предприятий и котельных, башни и вышки всех
@@ -301,7 +295,7 @@
         </tr>
         <tr>
           <td bgcolor="green">
-            <input type="radio" name="nm" value="20" />
+            <input v-model="classOfDefence" type="radio" name="nm" value="95" />
           </td>
           <td>
             Жилые и общественные здания, высота которых более чем на 25 м
@@ -317,7 +311,7 @@
         </tr>
         <tr>
           <td bgcolor="green">
-            <input type="radio" name="nm" value="21" />
+            <input v-model="classOfDefence" type="radio" name="nm" value="95" />
           </td>
           <td>
             Отдельно стоящие жилые и общественные здания в сельской местности
@@ -331,15 +325,15 @@
         </tr>
         <tr>
           <td bgcolor="green">
-            <input type="radio" name="nm" value="22" />
+            <input v-model="classOfDefence" type="radio" name="nm" value="95" />
           </td>
           <td>
             Общественные здания III-V степеней огнестойкости следующего
-            назна-чения: детские дошкольные учреждения, школы и
-            школыинтернаты, стационарых лечебных учреждений, спальные корпуса
-            и столовые учреждений здравоохранения и отдыха,
-            культурнопросветительные и зрелищные учреждения,
-            административные здания, вокзалы, гостиницы, мотели и кемпинги
+            назна-чения: детские дошкольные учреждения, школы и школыинтернаты,
+            стационарых лечебных учреждений, спальные корпуса и столовые
+            учреждений здравоохранения и отдыха, культурнопросветительные и
+            зрелищные учреждения, административные здания, вокзалы, гостиницы,
+            мотели и кемпинги
           </td>
           <td>
             В местностях со средней продолжительностью гроз 20 ч в год и более
@@ -349,11 +343,11 @@
         </tr>
         <tr>
           <td bgcolor="green">
-            <input type="radio" name="nm" value="23" />
+            <input v-model="classOfDefence" type="radio" name="nm" value="95" />
           </td>
           <td>
-            Открытые зрелищные учреждения (зрительные залы открытых
-            кинотеатров, трибуны открытых стадионов и т.п.)
+            Открытые зрелищные учреждения (зрительные залы открытых кинотеатров,
+            трибуны открытых стадионов и т.п.)
           </td>
           <td>
             В местностях со средней продолжительностью гроз 20 ч в год и более
@@ -363,7 +357,7 @@
         </tr>
         <tr>
           <td bgcolor="green">
-            <input type="radio" name="nm" value="24" />
+            <input v-model="classOfDefence" type="radio" name="nm" value="95" />
           </td>
           <td>
             Здания и сооружения, являющиеся памятниками истории, архитектуры и
@@ -377,15 +371,30 @@
         </tr>
       </tbody>
     </table>
-  </div>
+    <button @click="calculate_form()" type="button" class="btn btn-primary mb-3">Посчитать</button>
+  </form>
 </template>
 
 <script>
 export default {
   computed: {},
   methods: {
-    setMsg(item) {
-      console.log(item.target.value);
+    calculate_form(){
+      if (!this.L || !this.H || !this.W || !this.time || !this.quantytime || !this.typeOfDefence || !this.numberLightningStrikes || !this.classOfDefence) {
+        alert("Заполните все поля")
+      }else {
+        this.calculate_Rx();
+      }
+    },
+    calculate_N() {
+      let ans = ((+this.W + 6 * +this.H) * (+this.L + 6 * +this.H) - 7.7 * (+this.H * +this.H)) * +this.numberLightningStrikes * 0.000001;
+      console.log(ans);
+    },
+    calculate_Rx() {
+      let first = (1.1 - 0.002 * +this.H)
+      let second = (+this.H - 1.2 * +this.H)
+      let ans =  first * second
+      console.log(ans, first, second);
     },
   },
   data() {
@@ -399,11 +408,14 @@ export default {
         "Двойной тросовый молниеотвод одинаковой высоты",
         "Двойной тросовый молниеотвод разной высоты",
       ],
-      width: null,
-      height: null,
-      length: null,
+      L: 10,
+      H: 15,
+      W: 30,
       time: null,
       quantytime: null,
+      typeOfDefence: null,
+      numberLightningStrikes: "",
+      classOfDefence: null,
     };
   },
 };
