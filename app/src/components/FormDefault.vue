@@ -4,11 +4,7 @@
       <div class="col">Тип здания (сооружения)</div>
       <div class="col">
         <select class="form-select">
-          <!-- <option value="1">
-            Сосредоточенное (дымовые трубы, вышки, башни)
-          </option> -->
           <option value="2" selected>Прямоугольной формы</option>
-          <!-- <option value="3">Протяженный</option> -->
         </select>
       </div>
     </div>
@@ -79,6 +75,28 @@
       </div>
     </div>
     <div class="row">
+      <div class="col">Полная высота стержневого молниеотвода <b>h</b></div>
+      <div class="col">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1"
+              ><b>h&nbsp;=&nbsp;{{ H0 }}</b></span
+            >
+          </div>
+          <input
+            required=""
+            class="form-control"
+            type="number"
+            :value="H0"
+            @change="(v) => (H0 = v.target.value)"
+          />
+          <div class="input-group-append">
+            <span class="input-group-text" id="basic-addon2">м</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
       <div class="col">
         <h4 class="text-center">Тип молниезащиты:</h4>
         <label
@@ -131,14 +149,14 @@
         <div class="input-group mb-3">
           <div class="input-group-prepend">
             <span class="input-group-text" id="basic-addon1"
-              ><b>n&nbsp;=&nbsp;{{ quantytime }}</b></span
+              ><b>n&nbsp;=&nbsp;{{ numberLightningStrikes }}</b></span
             >
           </div>
           <input
             class="form-control"
             type="number"
-            :value="quantytime"
-            @change="(v) => (quantytime = v.target.value)"
+            :value="numberLightningStrikes"
+            @change="(v) => (numberLightningStrikes = v.target.value)"
           />
           <div class="input-group-append">
             <span class="input-group-text" id="basic-addon2"
@@ -149,7 +167,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col"></div>
+      <div class="col">Средняя продолжительность (<b>tср</b>) гроз в год</div>
       <div class="col">
         <div class="input-group">
           <div class="input-group-prepend">
@@ -380,9 +398,16 @@ export default {
   computed: {},
   methods: {
     calculate_form(){
-      if (!this.L || !this.H || !this.W || !this.time || !this.quantytime || !this.typeOfDefence || !this.numberLightningStrikes || !this.classOfDefence) {
+      if (!this.L || !this.H || !this.W || !this.time || !this.typeOfDefence || !this.numberLightningStrikes || !this.classOfDefence) {
         alert("Заполните все поля")
       }else {
+        let left = Math.sqrt(this.L * this.L + this.W * this.W) / 2
+        if (left < this.calculate_Rx()) {
+          alert('Объект защищен')
+        }else{
+          alert('Объект не защищен')
+        }
+        console.log(left, this.calculate_Rx(), 'left side AND Rx')
         this.calculate_Rx();
       }
     },
@@ -391,10 +416,8 @@ export default {
       console.log(ans);
     },
     calculate_Rx() {
-      let first = (1.1 - 0.002 * +this.H)
-      let second = (+this.H - 1.2 * +this.H)
-      let ans =  first * second
-      console.log(ans, first, second);
+      let ans = (1.1 - 0.002 * +this.H0) * (this.H0 - this.H / 0.85)
+      return Math.abs(ans);
     },
   },
   data() {
@@ -410,9 +433,9 @@ export default {
       ],
       L: 10,
       H: 15,
-      W: 30,
+      W: 10,
+      H0: 10,
       time: null,
-      quantytime: null,
       typeOfDefence: null,
       numberLightningStrikes: "",
       classOfDefence: null,
