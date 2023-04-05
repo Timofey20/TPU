@@ -58,15 +58,15 @@
         <div class="input-group">
           <div class="input-group-prepend">
             <span class="input-group-text" id="basic-addon1"
-              ><b>hx&nbsp;=&nbsp;{{ H }}</b></span
+              ><b>hx&nbsp;=&nbsp;{{ H0 }}</b></span
             >
           </div>
           <input
             required=""
             class="form-control"
             type="number"
-            :value="H"
-            @change="(v) => (H = v.target.value)"
+            :value="H0"
+            @change="(v) => (H0 = v.target.value)"
           />
           <div class="input-group-append">
             <span class="input-group-text" id="basic-addon2">м</span>
@@ -80,15 +80,15 @@
         <div class="input-group">
           <div class="input-group-prepend">
             <span class="input-group-text" id="basic-addon1"
-              ><b>h&nbsp;=&nbsp;{{ H0 }}</b></span
+              ><b>h&nbsp;=&nbsp;{{ H }}</b></span
             >
           </div>
           <input
             required=""
             class="form-control"
             type="number"
-            :value="H0"
-            @change="(v) => (H0 = v.target.value)"
+            :value="H"
+            @change="(v) => (H = v.target.value)"
           />
           <div class="input-group-append">
             <span class="input-group-text" id="basic-addon2">м</span>
@@ -207,7 +207,7 @@
               v-model="classOfDefence"
               type="radio"
               name="nm"
-              value="99.5"
+              value="95"
             />
           </td>
           <td>
@@ -239,7 +239,7 @@
         </tr>
         <tr>
           <td bgcolor="green">
-            <input v-model="classOfDefence" type="radio" name="nm" value="95" />
+            <input v-model="classOfDefence" type="radio" name="nm" value="90" />
           </td>
           <td>Наружные установки, создающие согласно ПУЭ зону класса В-Iг</td>
           <td>На всей территории СНГ</td>
@@ -361,7 +361,7 @@
         </tr>
         <tr>
           <td bgcolor="green">
-            <input v-model="classOfDefence" type="radio" name="nm" value="95" />
+            <input v-model="classOfDefence" type="radio" name="nm" value="90" />
           </td>
           <td>
             Открытые зрелищные учреждения (зрительные залы открытых кинотеатров,
@@ -402,27 +402,29 @@ export default {
         alert("Заполните все поля")
       }else {
         let left = Math.sqrt(this.L * this.L + this.W * this.W) / 2
-        if (left < this.calculate_Rx()) {
+        let answer = this.classOfDefence === 95 ? this.calculate_Rx_A() : this.calculate_Rx_B()
+        console.log(left, answer, this.calculate_N())
+        if (left < answer) {
           alert('Объект защищен')
         }else{
           alert('Объект не защищен')
         }
-        console.log(left, this.calculate_Rx(), 'left side AND Rx')
-        this.calculate_Rx();
       }
     },
     calculate_N() {
-      let ans = ((+this.W + 6 * +this.H) * (+this.L + 6 * +this.H) - 7.7 * (+this.H * +this.H)) * +this.numberLightningStrikes * 0.000001;
-      console.log(ans);
+      let ans = ((+this.W + 6 * +this.H0) * (+this.L + 6 * +this.H0) - 7.7 * (+this.H0 * +this.H0)) * +this.numberLightningStrikes * 0.000001;
+      return ans
     },
     calculate_H0() {
       return this.H0 * 0.85
     },
-    calculate_Rx() {
-      let ans = (1.1 - 0.002 * +this.H0) / (this.H0 - this.H / 0.85)
-      console.log((1.1 - 0.002 * +this.H0), (this.H0 - this.H / 0.85))
-      // console.log(this.calculate_H0())
-      return Math.abs(ans);
+    calculate_Rx_A() {
+      let ans = (1.1 - 0.002 * +this.H) * (+this.H - 1.2 * +this.H0)
+      return ans;
+    },
+    calculate_Rx_B() {
+      let ans = 1.5 * (+this.H - 1.1 * +this.H0)
+      return ans;
     },
   },
   data() {
@@ -436,10 +438,10 @@ export default {
         "Двойной тросовый молниеотвод одинаковой высоты",
         "Двойной тросовый молниеотвод разной высоты",
       ],
-      L: 10,
-      H: 5,
-      W: 10,
-      H0: 20,
+      L: 40, // длина здания
+      W: 20, // ширина здания
+      H0: 15, // Высота здания
+      H: 30, // Полная высота стержневого молниеотвода
       time: null,
       typeOfDefence: null,
       numberLightningStrikes: "",
