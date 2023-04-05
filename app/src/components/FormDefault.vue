@@ -415,8 +415,13 @@ export default {
       let ans = ((+this.W + 6 * +this.H) * (+this.L + 6 * +this.H) - 7.7 * (+this.H * +this.H)) * +this.numberLightningStrikes * 0.000001;
       console.log(ans);
     },
+    calculate_H0() {
+      return this.H0 * 0.85
+    },
     calculate_Rx() {
-      let ans = (1.1 - 0.002 * +this.H0) * (this.H0 - this.H / 0.85)
+      let ans = (1.1 - 0.002 * +this.H0) / (this.H0 - this.H / 0.85)
+      console.log((1.1 - 0.002 * +this.H0), (this.H0 - this.H / 0.85))
+      // console.log(this.calculate_H0())
       return Math.abs(ans);
     },
   },
@@ -432,9 +437,9 @@ export default {
         "Двойной тросовый молниеотвод разной высоты",
       ],
       L: 10,
-      H: 15,
+      H: 5,
       W: 10,
-      H0: 10,
+      H0: 20,
       time: null,
       typeOfDefence: null,
       numberLightningStrikes: "",
@@ -443,3 +448,7 @@ export default {
   },
 };
 </script>
+
+h0 - высота стержня (без молниеотвода)
+hx (h3) - высота объекта
+h - (высота стержня + высота молниетвода)
