@@ -403,9 +403,9 @@ export default {
       }else {
         let left = Math.sqrt(this.L * this.L + this.W * this.W) / 2
         let answer = this.classOfDefence === 95 ? this.calculate_Rx_A() : this.calculate_Rx_B()
-        console.log(left, answer, this.calculate_N())
+        console.log(left, answer, this.calculate_N(), this.classOfDefence === 95 ? 'A' : 'B')
         if (left < answer) {
-          alert('Объект защищен')
+          alert('Объект защищен') 
         }else{
           alert('Объект не защищен')
         }
@@ -438,9 +438,10 @@ export default {
         "Двойной тросовый молниеотвод одинаковой высоты",
         "Двойной тросовый молниеотвод разной высоты",
       ],
-      L: 40, // длина здания
-      W: 20, // ширина здания
-      H0: 15, // Высота здания
+      // пункт перегрузки угля (1 вариант)
+      L: 24, // длина здания
+      W: 12, // ширина здания
+      H0: 18, // Высота здания
       H: 30, // Полная высота стержневого молниеотвода
       time: null,
       typeOfDefence: null,
