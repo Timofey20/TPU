@@ -1,5 +1,5 @@
 <template lang="">
-  <form class="container">
+  <form class="wrapper">
     <div class="row">
       <div class="col">Тип здания (сооружения)</div>
       <div class="col">
@@ -189,8 +189,8 @@
     </div>
 
     <h4 class="text-center mb-3 mt-5">Выбор типа зоны защиты:</h4>
-    <table class="table table-bordered">
-      <tbody>
+    <table class="table table-bordered table-hover">
+      <thead class="table-info">
         <tr style="background: #99ccff">
           <td></td>
           <td>Здания и сооружения</td>
@@ -201,13 +201,15 @@
           </td>
           <td>Категория молниезащиты</td>
         </tr>
+      </thead>
+      <tbody class="table-group-divider">
         <tr>
           <td bgcolor="green">
             <input
               v-model="classOfDefence"
               type="radio"
               name="nm"
-              value="95"
+              value="95-1"
             />
           </td>
           <td>
@@ -224,7 +226,7 @@
               v-model="classOfDefence"
               type="radio"
               name="nm"
-              value="95"
+              value="95-2"
             />
           </td>
           <td>
@@ -239,7 +241,12 @@
         </tr>
         <tr>
           <td bgcolor="green">
-            <input v-model="classOfDefence" type="radio" name="nm" value="90" />
+            <input
+              v-model="classOfDefence"
+              type="radio"
+              name="nm"
+              value="90-3"
+            />
           </td>
           <td>Наружные установки, создающие согласно ПУЭ зону класса В-Iг</td>
           <td>На всей территории СНГ</td>
@@ -248,7 +255,12 @@
         </tr>
         <tr>
           <td bgcolor="green">
-            <input v-model="classOfDefence" type="radio" name="nm" value="90" />
+            <input
+              v-model="classOfDefence"
+              type="radio"
+              name="nm"
+              value="90-4"
+            />
           </td>
           <td>
             Расположенные в сельской местности небольшие строения III — V
@@ -265,7 +277,12 @@
         </tr>
         <tr>
           <td bgcolor="green">
-            <input v-model="classOfDefence" type="radio" name="nm" value="90" />
+            <input
+              v-model="classOfDefence"
+              type="radio"
+              name="nm"
+              value="90-5"
+            />
           </td>
           <td>
             Небольшие строения III-V степеней огнестойкости, расположенные в
@@ -283,7 +300,12 @@
         </tr>
         <tr>
           <td bgcolor="green">
-            <input v-model="classOfDefence" type="radio" name="nm" value="95" />
+            <input
+              v-model="classOfDefence"
+              type="radio"
+              name="nm"
+              value="95-6"
+            />
           </td>
           <td>
             Здания вычислительных центров, в том числе расположенные в городской
@@ -297,7 +319,12 @@
         </tr>
         <tr>
           <td bgcolor="green">
-            <input v-model="classOfDefence" type="radio" name="nm" value="90" />
+            <input
+              v-model="classOfDefence"
+              type="radio"
+              name="nm"
+              value="90-7"
+            />
           </td>
           <td>
             Дымовые и прочие трубы предприятий и котельных, башни и вышки всех
@@ -313,7 +340,12 @@
         </tr>
         <tr>
           <td bgcolor="green">
-            <input v-model="classOfDefence" type="radio" name="nm" value="95" />
+            <input
+              v-model="classOfDefence"
+              type="radio"
+              name="nm"
+              value="95-8"
+            />
           </td>
           <td>
             Жилые и общественные здания, высота которых более чем на 25 м
@@ -329,7 +361,12 @@
         </tr>
         <tr>
           <td bgcolor="green">
-            <input v-model="classOfDefence" type="radio" name="nm" value="95" />
+            <input
+              v-model="classOfDefence"
+              type="radio"
+              name="nm"
+              value="95-9"
+            />
           </td>
           <td>
             Отдельно стоящие жилые и общественные здания в сельской местности
@@ -343,7 +380,12 @@
         </tr>
         <tr>
           <td bgcolor="green">
-            <input v-model="classOfDefence" type="radio" name="nm" value="95" />
+            <input
+              v-model="classOfDefence"
+              type="radio"
+              name="nm"
+              value="95-10"
+            />
           </td>
           <td>
             Общественные здания III-V степеней огнестойкости следующего
@@ -361,7 +403,12 @@
         </tr>
         <tr>
           <td bgcolor="green">
-            <input v-model="classOfDefence" type="radio" name="nm" value="90" />
+            <input
+              v-model="classOfDefence"
+              type="radio"
+              name="nm"
+              value="90-11"
+            />
           </td>
           <td>
             Открытые зрелищные учреждения (зрительные залы открытых кинотеатров,
@@ -375,7 +422,12 @@
         </tr>
         <tr>
           <td bgcolor="green">
-            <input v-model="classOfDefence" type="radio" name="nm" value="95" />
+            <input
+              v-model="classOfDefence"
+              type="radio"
+              name="nm"
+              value="95-12"
+            />
           </td>
           <td>
             Здания и сооружения, являющиеся памятниками истории, архитектуры и
@@ -389,41 +441,94 @@
         </tr>
       </tbody>
     </table>
-    <button @click="calculate_form()" type="button" class="btn btn-primary mb-3">Посчитать</button>
+    <div v-if="ValidationError !== ''" class="alert alert-danger" role="alert">
+      {{ ValidationError }}
+    </div>
+    <button
+      @click="calculate_form()"
+      type="button"
+      class="btn btn-primary mb-3"
+    >
+      Посчитать
+    </button>
   </form>
+  <button style="display: none;" type="button" class="btn btn-primary" id="mdlOpenBtn" data-bs-toggle="modal" data-bs-target="#exampleModal"></button>
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
+import Joi from "joi";
+
 export default {
   computed: {},
   methods: {
-    calculate_form(){
-      if (!this.L || !this.H || !this.W || !this.time || !this.typeOfDefence || !this.numberLightningStrikes || !this.classOfDefence) {
-        alert("Заполните все поля")
-      }else {
-        let left = Math.sqrt(this.L * this.L + this.W * this.W) / 2
-        let answer = this.classOfDefence === 95 ? this.calculate_Rx_A() : this.calculate_Rx_B()
-        console.log(left, answer, this.calculate_N(), this.classOfDefence === 95 ? 'A' : 'B')
-        if (left < answer) {
-          alert('Объект защищен') 
-        }else{
-          alert('Объект не защищен')
-        }
+    async calculate_form() {
+      try {
+        await this.schema.validateAsync({
+          "Длина здания": this.L,
+          "Ширина здания": this.H,
+          "Высота здания": this.H0,
+          "Полная высота стержневого молниеотвода": this.H,
+          "Средняя продолжительность tср гроз в год": this.time,
+          "Тип молниезащиты": this.typeOfDefence,
+          "Удельная плотность ударов молнии в землю":
+            this.numberLightningStrikes,
+          "Выбор типа зоны защиты": this.classOfDefence,
+        });
+        this.ValidationError = "";
+      } catch (err) {
+        this.ValidationError = err;
+        return false;
       }
+
+      let left = Math.sqrt(this.L * this.L + this.W * this.W) / 2;
+      let answer =
+        this.classOfDefence[1] === "5"
+          ? this.calculate_Rx_A()
+          : this.calculate_Rx_B();
+          
+      console.log(left, answer, this.calculate_N());
+      document.getElementById('mdlOpenBtn').click()
+      if (left < answer) {
+        alert("Объект защищен");
+      } else {
+        alert("Объект не защищен");
+      }
+      return false;
     },
     calculate_N() {
-      let ans = ((+this.W + 6 * +this.H0) * (+this.L + 6 * +this.H0) - 7.7 * (+this.H0 * +this.H0)) * +this.numberLightningStrikes * 0.000001;
-      return ans
+      let ans =
+        ((+this.W + 6 * +this.H0) * (+this.L + 6 * +this.H0) -
+          7.7 * (+this.H0 * +this.H0)) *
+        +this.numberLightningStrikes *
+        0.000001;
+      return ans;
     },
     calculate_H0() {
-      return this.H0 * 0.85
+      return this.H0 * 0.85;
     },
     calculate_Rx_A() {
-      let ans = (1.1 - 0.002 * +this.H) * (+this.H - 1.2 * +this.H0)
+      let ans = (1.1 - 0.002 * +this.H) * (+this.H - 1.2 * +this.H0);
       return ans;
     },
     calculate_Rx_B() {
-      let ans = 1.5 * (+this.H - 1.1 * +this.H0)
+      let ans = 1.5 * (+this.H - 1.1 * +this.H0);
       return ans;
     },
   },
@@ -447,11 +552,21 @@ export default {
       typeOfDefence: null,
       numberLightningStrikes: "",
       classOfDefence: null,
+      schema: Joi.object({
+        "Длина здания": Joi.number().required(),
+        "Ширина здания": Joi.number().required(),
+        "Высота здания": Joi.number().required(),
+        "Полная высота стержневого молниеотвода": Joi.number().required(),
+        "Тип молниезащиты": Joi.string().required(),
+        "Удельная плотность ударов молнии в землю": Joi.string().required(),
+        "Средняя продолжительность tср гроз в год": Joi.number().required(),
+        "Выбор типа зоны защиты": Joi.string().required(),
+      }),
+      ValidationError: "",
     };
   },
 };
 </script>
 
-h0 - высота стержня (без молниеотвода)
-hx (h3) - высота объекта
-h - (высота стержня + высота молниетвода)
+h0 - высота стержня (без молниеотвода) hx (h3) - высота объекта h - (высота
+стержня + высота молниетвода)
