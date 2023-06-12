@@ -451,28 +451,44 @@
     >
       Посчитать
     </button>
-  </form>
-  <button style="display: none;" type="button" class="btn btn-primary" id="mdlOpenBtn" data-bs-toggle="modal" data-bs-target="#exampleModal"></button>
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          ...
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+    <button type="button" style="display: none;" id="mdlOpenBtn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      Launch demo modal
+    </button>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Результат расчёта</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <h5>Исходные данные</h5>
+            Длина здания - {{ this.L}} м<br>
+            Ширина здания - {{this.H}} м<br>
+            Высота здания - {{this.H0}} м<br>
+            Полная высота стержневого молниеотвода - {{this.H}} м<br>
+            Средняя продолжительность tср гроз в год - {{this.time}} ч/год<br>
+            Удельная плотность ударов молнии в землю - {{this.numberLightningStrikes}} 1/км<sup>2</sup>·год<br>
+            Тип молниезащиты - {{this.typeOfDefence}} <br>
+            <h5 class="mt-3">Результат</h5>
+            Кол-во поражений молний в год защищаемого объекта - {{ calculate_N() }} шт/год<br>
+            h <sub>0</sub> - {{ calculate_H0() }} м<br>
+            r <sub>x</sub> - {{ this.classOfDefence[1] === "5" ? this.calculate_Rx_A() : this.calculate_Rx_B() }} м<br>
+            <h3 class="text-center">{{totalAnswer}}</h3>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </form>
 </template>
 
 <script>
+import bootstrap from 'bootstrap'
 import Joi from "joi";
 
 export default {
@@ -480,7 +496,7 @@ export default {
   methods: {
     async calculate_form() {
       try {
-        await this.schema.validateAsync({
+        let value = await this.schema.validateAsync({
           "Длина здания": this.L,
           "Ширина здания": this.H,
           "Высота здания": this.H0,
@@ -491,6 +507,7 @@ export default {
             this.numberLightningStrikes,
           "Выбор типа зоны защиты": this.classOfDefence,
         });
+        console.log(value)
         this.ValidationError = "";
       } catch (err) {
         this.ValidationError = err;
@@ -503,12 +520,12 @@ export default {
           ? this.calculate_Rx_A()
           : this.calculate_Rx_B();
           
-      console.log(left, answer, this.calculate_N());
+      console.log(left, answer, this.calculate_N(), bootstrap);
       document.getElementById('mdlOpenBtn').click()
       if (left < answer) {
-        alert("Объект защищен");
+        this.totalAnswer = "Объект защищен"
       } else {
-        alert("Объект не защищен");
+        this.totalAnswer = "Объект не защищен";
       }
       return false;
     },
@@ -543,14 +560,14 @@ export default {
         "Двойной тросовый молниеотвод одинаковой высоты",
         "Двойной тросовый молниеотвод разной высоты",
       ],
-      L: 40, // длина здания
-      W: 20, // ширина здания
-      H0: 15, // Высота здания
-      H: 30, // Полная высота стержневого молниеотвода
+      L: null, // длина здания
+      W: null, // ширина здания
+      H0: null, // Высота здания
+      H: null, // Полная высота стержневого молниеотвода
       time: null,
-      typeOfDefence: null,
-      numberLightningStrikes: "",
-      classOfDefence: null,
+      typeOfDefence: "",
+      numberLightningStrikes: null,
+      classOfDefence: '',
       schema: Joi.object({
         "Длина здания": Joi.number().required(),
         "Ширина здания": Joi.number().required(),
@@ -562,6 +579,7 @@ export default {
         "Выбор типа зоны защиты": Joi.string().required(),
       }),
       ValidationError: "",
+      totalAnswer: ''
     };
   },
 };
@@ -569,3 +587,11 @@ export default {
 
 h0 - высота стержня (без молниеотвода) hx (h3) - высота объекта h - (высота
 стержня + высота молниетвода)
+// L: 40, // длина здания
+// W: 20, // ширина здания
+// H0: 15, // Высота здания
+// H: 30, // Полная высота стержневого молниеотвода
+// time: 23,
+// typeOfDefence: "Одиночный стержневой молниеотвод",
+// numberLightningStrikes: "123",
+// classOfDefence: '95',
