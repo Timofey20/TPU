@@ -471,6 +471,7 @@
             Средняя продолжительность tср гроз в год - {{this.time}} ч/год<br>
             Удельная плотность ударов молнии в землю - {{this.numberLightningStrikes}} 1/км<sup>2</sup>·год<br>
             Тип молниезащиты - {{this.typeOfDefence}} <br>
+            <img class="mt-2" :src="require(`@/img/light${this.typeOfDef.findIndex((e) => e === this.typeOfDefence) + 1}.jpg`)" />
             <h5 class="mt-3">Результат</h5>
             Кол-во поражений молний в год защищаемого объекта - {{ calculate_N() }} шт/год<br>
             h <sub>0</sub> - {{ calculate_H0() }} м<br>
@@ -479,7 +480,6 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
           </div>
         </div>
       </div>
